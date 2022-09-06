@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legends Never Dies</title>
+    <style>
+        #container {
+            /* width: 100%; */
+            height: 625px;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-base.min.js" 
+    type="text/javascript"></script>
+</head>
+<body>
+    <div id="container">
+        <script>
+            anychart.onDocumentReady(() => {
+
+                chart = anychart.bar();
+
+                var winlossData = [
+                    [65, 17, "2015-16"],
+                    [61, 21, "2014-15"],
+                    [55, 27, "2013-14"],
+                    [37, 45, "2012-13"],
+                    [25, 41, "2011-12"],
+                    [25, 57, "2010-11"],
+                    [25, 57, "2009-10"],
+                    [17, 65, "2008-09"],
+                    [25, 57, "2007-08"],
+                    [40, 42, "2006-07"],
+                    [37, 45, "2005-06"],
+                    [48, 34, "2004-05"],
+                    [26, 56, "2003-04"],
+                    [32, 50, "2002-03"],
+                    [24, 58, "2001-02"],
+                    [26, 56, "2000-01"],
+                    [15, 67, "1999-00"],
+                    [19, 31, "1998-99"],
+                    [21, 61, "1997-98"],
+                    [26, 56, "1996-97"]
+                ];
+
+                // const calculatePercentage = (column) => {
+                //     let percentage = 0;
+                //     for(let i = 0; i < winlossData.length; i++) {
+                //         if(column === 0) {
+                //             let value = winlossData[i][column] + winlossData[i][column + 1]
+                //             percentage = (winlossData[i][column] / value) * 100;
+                //         } else {
+                //             let value = winlossData[i][column] + winlossData[i][column - 1]
+                //             percentage = (winlossData[i][column] / value) * 100;
+                //         }
+                //     }
+                //     return percentage
+                // }
+
+                const createSeries = function(columnNumber, type) {
+                    let data = [];
+                    for(let i = 0; i < winlossData.length; i++) {
+                        const value = winlossData[i][columnNumber];
+                        let percentValue = ((value / (winlossData[i][0] + winlossData[i][1]))*100).toFixed(2)
+                        let center = 0;
+                        if(type === "Wins") {
+                            data.push({
+                                x: winlossData[i][2],
+                                low: center,
+                                high: center + value,
+                                value: value,
+                                percentValue: percentValue
+                            })
+                        } else {
+                            data.push({
+                                x: winlossData[i][2],
+                                low: -center,
+                                high: -center - value,
+                                value: value,
+                                percentValue: percentValue
+                            })
+                        }
+                    }
+                    // console.log(data)
+                    var series = chart.rangeBar(data);
+                    series.name(type).stroke("3 #fff 1")
+                }
+                createSeries(0, "Losses");
+                createSeries(1, "Wins");
+
+                chart
+                    .title()
+                    .enabled(true)
+                    .text("20 Years of LA Lakers Win-Loss Record with Kobe Bryant (1996-2016)")
+                chart
+                    .legend()
+                    .enabled(true);
+
+                chart.yScale().stackMode("value");
+                chart.container("container");
+                chart.draw();
+
+                chart
+                    .xAxis()
+                    .ticks(false)
+                
+                chart
+                    .xAxis()
+                    .title()
+                    .enabled(true)
+                    .text("Years")
+                    .padding([0, 0, 10, 0])
+
+                chart
+                    .xAxis()
+                    .labels()
+                    .fontSize(11)
+                    .fontColor('#474747')
+                    .padding([0, 10, 0, 0])
+
+                chart
+                    .yScale()
+                    .maximum(80)
+
+                chart
+                    .yAxis(0)
+                    .labels()
+                    .format(function() {
+                        return Math.abs(this.value)
+                    })
+
+                chart
+                    .lineMarker()
+                    .value(0)
+                    .stroke('#CECECE')
+
+                chart
+                    .tooltip()
+                    .useHtml(true)
+                    .fontSize(12)
+                    .titleFormat(function() {
+                        return this.getData("x") + " " + this.seriesName
+                    })
+                    .format(function() {
+                        return(
+                            "<h6 style='font-size:12px; font-weight:400; margin:0.25rem 0;'>Total Games: <b>" 
+                                + this.getData("value") + "</b></h6></br>" +
+                            "<h6 style='font-size:12px; font-weight:400; margin:0.25rem 0;'>Total Games: <b>" 
+                                + this.getData("percentValue") + "%</b></h6>"
+                    
+                        )
+                    })
+
+                    chart.palette(
+                        anychart.palettes.distinctColors().items(["#FDB827", "#542583"])
+                    )
+
+            })
+        </script>
+    </div>
+</body>
+</html>

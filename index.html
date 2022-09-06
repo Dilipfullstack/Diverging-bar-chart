@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India vs United Kingdom's GDP</title>
+    <style>
+        #container {
+            padding: 0;
+            margin: 0;
+            height: 1000px;
+        }
+    </style>
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-base.min.js" 
+    type="text/javascript"></script>
+</head>
+<body>
+    <div id="container">
+            <script>
+                anychart.onDocumentReady(function() {
+
+                    // create a chart
+                    const chart = anychart.bar()
+
+                    // Set data
+                    const GDPdata = [
+                        ['37.03', '73.23', '1960'],
+                        ['39.23', '77.74', '1961'],
+                        ['42.16', '81.25', '1962'],
+                        ['48.42', '86.56', '1963'],
+                        ['56.48', '94.41', '1964'],
+                        ['59.55', '101.82', '1965'],
+                        ['45.87', '108.57', '1966'],
+                        ['50.13', '113.12', '1967'],
+                        ['53.09', '107.76', '1968'],
+                        ['58.45', '116.46', '1969'],
+                        ['62.42', '130.67', '1970'],
+                        ['67.35', '148.11', '1971'],
+                        ['71.46', '169.97', '1972'],
+                        ['85.52', '192.54', '1973'],
+                        ['99.53', '206.13', '1974'],
+                        ['98.47', '241.76', '1975'],
+                        ['102.72', '232.61', '1976'],
+                        ['121.49', '263.07', '1977'],
+                        ['137.30', '335.88', '1978'],
+                        ['152.99', '438.99', '1979'],
+                        ['186.33', '564.95', '1980'],
+                        ['193.49', '540.77', '1981'],
+                        ['200.72', '515.05', '1982'],
+                        ['218.26', '489.62', '1983'],
+                        ['212.16', '461.49', '1984'],
+                        ['232.51', '489.29', '1985'],
+                        ['248.99', '601.45', '1986'],
+                        ['279.03', '745.16', '1987'],
+                        ['296.59', '910.12', '1988'],
+                        ['296.04', '926.88', '1989'],
+                        ['320.98', '1093.17', '1990'],
+                        ['270.11', '1142.80', '1991'],
+                        ['288.21', '1179.66', '1992'],
+                        ['279.30', '1061.39', '1993'],
+                        ['327.28', '1140.49', '1994'],
+                        ['360.28', '1346.42', '1995'],
+                        ['392.90', '1421.51', '1996'],
+                        ['415.87', '1559.57', '1997'],
+                        ['421.35', '1653.39', '1998'],
+                        ['458.82', '1685.76', '1999'],
+                        ['468.39', '1662.13', '2000'],
+                        ['485.44', '1643.91', '2001'],
+                        ['514.94', '1784.08', '2002'],
+                        ['607.70', '2057.09', '2003'],
+                        ['709.15', '2421.81', '2004'],
+                        ['820.38', '2544.83', '2005'],
+                        ['940.26', '2717.06', '2006'],
+                        ['1216.74', '3106.18', '2007'],
+                        ['1198.90', '2938.88', '2008'],
+                        ['1341.89', '2425.80', '2009'],
+                        ['1675.62', '2491.11', '2010'],
+                        ['1823.05', '2674.89', '2011'],
+                        ['1827.64', '2719.16', '2012'],
+                        ['1856.72', '2803.29', '2013'],
+                        ['2039.13', '3087.17', '2014'],
+                        ['2103.59', '2956.57', '2015'],
+                        ['2294.80', '2722.85', '2016'],
+                        ['2651.47', '2699.02', '2017'],
+                        ['2702.93', '2900.79', '2018'],
+                        ['2831.55', '2878.67', '2019'],
+                        ['2667.69', '2756.90', '2020'],
+                        ['3173.40', '3186.86', '2021']
+                    ]
+                
+                    const createSeries = (columnNumber, country) => {
+                        let data = [];
+                        let center = 0;
+                        for(let i = GDPdata.length - 1; i >= 0; i--) {
+                            let value = parseFloat(GDPdata[i][columnNumber]) ;
+                            let year = GDPdata[i][2]
+                            if(columnNumber === 0) {
+                                data.push({
+                                    x: year,
+                                    low: center,
+                                    high: -center - value,
+                                    value: value
+                                })
+                            } else {
+                                data.push({
+                                    x: year,
+                                    low: 0,
+                                    high: center + value,
+                                    value: value
+                                })
+                            }
+                        }
+                        let series = chart.rangeBar(data);
+                        series.name(country).stroke('3 #fff 1')
+                    }
+
+                    createSeries(0, "India");
+                    createSeries(1, "United Kingdom");
+
+                    chart.yScale().stackMode("value").maximum(6500)
+
+                    chart
+                        .title()
+                        .enabled(true)
+                        .text('GDP Comparison Between India and United Kingdom From 1960 to 2021')
+
+                    chart
+                        .legend()
+                        .enabled(true)
+                    
+                    chart
+                        .xAxis()
+                        .title()
+                        .enabled(true)
+                        .text("Year")
+                        .padding([0, 0, 10, 0])
+
+                    chart
+                        .xAxis()
+                        .ticks(false)
+
+                    chart
+                        .yAxis()
+                        .title()
+                        .enabled(true)
+                        .text('GDP (Billion US Dollar)')
+                        .padding([10, 0, 0, 0])
+
+                    chart
+                        .lineMarker()
+                        .value(0)
+                        .stroke('#CECECE')
+
+                    chart
+                        .yAxis()
+                        .labels()
+                        .format(function() {
+                            return Math.abs(this.value)
+                        })
+
+                    chart
+                        .tooltip()
+                        .useHtml(true)
+                        .fontSize(12)
+                        .titleFormat(function() {
+                            return this.getData('x') + ", " + this.seriesName
+                        })
+                        .format(function() {
+                            return "<h6 style='font-size:12px; font-weight:400; margin:0.25rem 0;'>GDP : $ "+ this.getData('value') + " </h6>"
+                        })
+
+                    chart.palette(
+                        anychart.palettes.distinctColors().items(["#FDB827", "#542583"])
+                    )
+                        
+                    chart.container("container");
+                    chart.draw();
+                
+                })    
+            </script>
+    </div>
+</body>
+</html>
