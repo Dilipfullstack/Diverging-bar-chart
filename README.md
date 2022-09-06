@@ -1,3 +1,3 @@
 # Diverging-bar-chart
 
-Divergin Bar Graph - 20 years of LA lakers Win-Loss record with Kobe Bryan (1996-2016) 
+Divergin Bar Graph - GDP Comparison Between India and United Kingdom From 1960 to 2021 
